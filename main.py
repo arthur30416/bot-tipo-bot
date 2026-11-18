@@ -1,3 +1,4 @@
+import random  # <--- 1. Adicionado aqui para o comando roll funcionar
 import discord
 from discord.ext import commands
 
@@ -45,4 +46,17 @@ async def repete(ctx, times: int, content='repeating...'):
         await ctx.send(content)
 
 
-bot.run("")
+@bot.command()
+async def roll(ctx, dice: str):
+    """Rola um dado no formato NdN (ex: 2d6)."""
+    try:
+        rolls, limit = map(int, dice.split('d'))
+    except Exception:
+        await ctx.send('O formato deve ser no padrão NdN! (Exemplo: 2d6)')
+        return
+
+    result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
+    await ctx.send(result)
+
+
+bot.run()
